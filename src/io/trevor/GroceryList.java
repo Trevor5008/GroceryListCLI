@@ -16,14 +16,24 @@ public class GroceryList {
         }
         System.out.println();
     }
-    public void modifyList(int position, String newItem) {
-        groceries.set(position-1, newItem);
+    public void modifyList(String oldItem, String newItem) {
+        int position = findItem(oldItem);
+        groceries.set(position, newItem);
+
     }
-    public void removeItem(int position) {
-        String item = groceries.get(position-1);
-        groceries.remove(item);
+    public void removeItem(String item) {
+        int position = findItem(item);
+        groceries.remove(position);
     }
-    public boolean findItem(String item) {
+    private int findItem(String item) {
+        if(onFile(item)) {
+            int position = groceries.indexOf(item);
+            return position;
+        }
+        return -1;
+    }
+
+    public boolean onFile(String item) {
         int position = groceries.indexOf(item);
         if(position >= 0) {
             return true;

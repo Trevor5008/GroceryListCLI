@@ -47,7 +47,7 @@ public class Main {
 
     public static void printInstructions() {
         System.out.println("\nMenu Options: ");
-        System.out.println("\t 0 - To print the quit the application");
+        System.out.println("\t 0 - To quit the application");
         System.out.println("\t 1 - To display items in your current list");
         System.out.println("\t 2 - To add an item to your list");
         System.out.println("\t 3 - To modify and item in your list");
@@ -57,37 +57,49 @@ public class Main {
     }
 
     public static void addGroceryItem() {
-        //TODO: Provide a conditional check before trying to add item, to make sure item doesn't
-        // already exist...
         System.out.print("Enter an item to add: ");
         String item = scanner.nextLine();
-        groceryList.addGroceryItem(item);
-        System.out.println(item+", has been added to your list\n");
+        if(!groceryList.onFile(item)) {
+            groceryList.addGroceryItem(item);
+            System.out.println(item + ", has been added to your list\n");
+        } else {
+            System.out.println(item + ", is already in your list");
+        }
     }
 
     public static void modifyList() {
-        //TODO: Adjust to accept a String input, instead of an int position
-        System.out.print("Enter an item number you want to update: ");
-        int position = scanner.nextInt();
-        scanner.nextLine();
-        System.out.print("Enter the new item: ");
-        String newItem = scanner.nextLine();
-        groceryList.modifyList(position, newItem);
-        System.out.println("\nItem #"+position+" has been updated\n");
+        boolean quit = false;
+        while(!quit) {
+            System.out.print("Enter an item you want to replace ('q' to quit): ");
+            String item = scanner.nextLine();
+            if(item.equalsIgnoreCase("q")) { quit = true; }
+            else if (groceryList.onFile(item)) {
+                System.out.print("Enter the new item: ");
+                String newItem = scanner.nextLine();
+                groceryList.modifyList(item, newItem);
+                System.out.println("\n" + item + " has been replaced with: " + newItem + "\n");
+                quit = true;
+            } else {
+                System.out.println(item + ", is not in your current list");
+            }
+        }
     }
 
     public static void removeItem() {
-        //TODO: Modify method to accept a String instead of an int position
-        System.out.print("Enter an item number you'd like to remove: ");
-        int position = scanner.nextInt();
-        groceryList.removeItem(position);
-        System.out.println("\nItem #"+position+", has been removed\n");
+        System.out.print("Enter an item you'd like to remove: ");
+        String item = scanner.nextLine();
+        if(groceryList.onFile(item)) {
+            groceryList.removeItem(item);
+            System.out.println("\n" + item + " has been removed\n");
+        } else {
+            System.out.println("\n"+item+" is not currently in your items");
+        }
     }
 
     public static void findItem() {
         System.out.print("Enter an item to search for: ");
         String item = scanner.nextLine();
-        boolean exists = groceryList.findItem(item);
+        boolean exists = groceryList.onFile(item);
         if(exists) {
             System.out.println("\nFound "+item+", in your list");
         } else {
