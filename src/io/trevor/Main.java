@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    /**We instantiate the GroceryList class, in order to access both the
+
+    /** We instantiate the GroceryList class, in order to access both the
      * ArrayList (groceries) and the multiple methods w/in...
      */
     private static GroceryList groceryList = new GroceryList();
@@ -99,8 +100,7 @@ public class Main {
     public static void findItem() {
         System.out.print("Enter an item to search for: ");
         String item = scanner.nextLine();
-        boolean exists = groceryList.onFile(item);
-        if(exists) {
+        if(groceryList.onFile(item)) {
             System.out.println("\nFound "+item+", in your list");
         } else {
             System.out.println("\n"+item+" is not currently in your items");
